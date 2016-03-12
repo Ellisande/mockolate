@@ -39,7 +39,7 @@ describe('when class', () => {
         b: 2
       };
       newWhen.thenReturn(returnValue);
-      expect(newWhen.then).to.equal(returnValue);
+      expect(newWhen.return).to.equal(returnValue);
     });
 
     it('should return the mocked function', () => {
@@ -49,7 +49,7 @@ describe('when class', () => {
         b: 2
       };
       const result = newWhen.thenReturn(returnValue);
-      expect(newWhen.then).to.equal(returnValue);
+      expect(newWhen.return).to.equal(returnValue);
       expect(result).to.equal(mockFunc);
     });
 
@@ -171,7 +171,7 @@ describe('when class', () => {
 
     it('should return invalid if a return value and an error are both set', () => {
       const invalid = new When(mockFunc);
-      invalid.then = 'a';
+      invalid.return = 'a';
       invalid.error = 'b';
       expect(invalid.valid()).to.equal(false);
     });

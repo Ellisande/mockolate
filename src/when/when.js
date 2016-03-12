@@ -10,17 +10,17 @@ class When {
     this.args = args;
   }
   verify(){
-    if(this.then || this.error){
+    if(this.return || this.error){
       //TODO Add better error.
       throw new Error('Each when can only have one then. If you want to add another condition, chain it off the then.');
     }
   }
   valid(){
-    return this.error ? !this.then : !!this.then;
+    return this.error ? !this.return : !!this.return;
   }
   thenReturn(returnValue){
     this.verify();
-    this.then = returnValue;
+    this.return = returnValue;
     return this.mockedFunction;
   }
   thenError(errorValue){
