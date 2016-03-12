@@ -1,0 +1,11 @@
+sudo: required
+dist: trusty
+
+language: node_js
+
+node_js:
+  - "4.3.1"
+
+script:
+  - gulp
+  - npm test
