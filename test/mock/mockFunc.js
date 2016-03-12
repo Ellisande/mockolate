@@ -87,6 +87,15 @@ describe('mock function', () => {
     });
   });
 
+  describe('specificity', () => {
+    it('should match more specific whens before less specific ones', () => {
+      mockFunc.when().thenReturn('bat');
+      mockFunc.when(1).thenReturn('crazy');
+      expect(mockFunc(1)).to.equal('crazy');
+      expect(mockFunc()).to.equal('bat');
+    });
+  });
+
   describe('verification', () => {
     it('should be able to report the number of times it was invoked', () => {
       mockFunc();

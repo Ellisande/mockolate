@@ -1,6 +1,10 @@
 import _ from 'lodash';
 import When from '../when/when';
 
+const sortBySpecificity = (leftWhen, rightWhen) => {
+  return rightWhen.specificity - leftWhen.specificity;
+};
+
 const MockFunction = function(){
   const whens = [];
   const mockedFunction = function(){
@@ -24,6 +28,7 @@ const MockFunction = function(){
     const args = _.toArray(arguments);
     const when = new When(mockedFunction, args);
     whens.push(when);
+    whens.sort(sortBySpecificity);
     return when;
   };
   mockedFunction.called = 0;
