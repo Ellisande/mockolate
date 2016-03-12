@@ -8,6 +8,7 @@ class When {
     this.mockedFunction = mockedFunction;
     this.options = _.get(mockedFunction, 'options.when', {});
     this.args = args;
+    this.specificity = args ? args.length : 0;
   }
   verify(){
     if(this.return || this.error){

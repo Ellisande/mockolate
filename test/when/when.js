@@ -29,6 +29,17 @@ describe('when class', () => {
       const result = newWhen.args;
       expect(args).to.deep.equal(_.toArray(result));
     });
+
+    it('should set the specificity equal to the number of arguments', () => {
+      const args = [1, 2, 3];
+      const newWhen = new When(mockFunc, args);
+      expect(newWhen.specificity).to.equal(3);
+    });
+
+    it('should set a specificity of 0 if no args are passed in', () => {
+      const newWhen = new When(mockFunc);
+      expect(newWhen.specificity).to.equal(0);
+    });
   });
 
   describe('then return', () => {
