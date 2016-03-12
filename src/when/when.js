@@ -36,14 +36,14 @@ class When {
     return this.mockedFunction;
   }
   matches(){
-    const argsToMatch = arguments;
+    const argsToMatch = arguments || [];
     let allMatch = this.args.every((arg, index) => {
       let argToMatch = argsToMatch[index];
       //If args is a matcher then invoke its matchiness.
       if(arg.equals){
         return arg.equals(argToMatch);
       }
-      if(argToMatch.equals){
+      if(_.get(argToMatch, 'equals')){
         return argToMatch.equals(arg);
       }
       return arg === argToMatch;
