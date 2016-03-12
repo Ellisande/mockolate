@@ -1,3 +1,3 @@
-import mockFunction from 'mock/mockFunc';
+import mockFunction from './mock/mockFunc';
 
 export {mockFunction};
