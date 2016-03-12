@@ -2,6 +2,7 @@ import MockFunction from '../../src/mock/mockFunc';
 import {
   expect
 } from 'chai';
+import When from '../../src/when/when';
 
 describe('mock function', () => {
   describe('no when', () => {
@@ -32,9 +33,17 @@ describe('mock function', () => {
       expect(mockFunc.when('a', 'b', 1, 3)).to.be.ok;
     });
 
-    it.skip('should return a When object', () => {
+    it('should return a When object', () => {
       const mockFunc = MockFunction();
-      // expect(mockFunc.when()).to.be.a(When)
+      expect(mockFunc.when()).to.be.instanceof(When);
+    });
+  });
+
+  describe('then', () => {
+    it('should return a result when invoked with a matching when/then', () => {
+      const mockFunc = MockFunction();
+      mockFunc.when(1).thenReturn(2);
+      expect(mockFunc(1)).to.equal(2);
     });
   });
 
