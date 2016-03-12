@@ -1,0 +1,9 @@
+src
+node_modules
+.git
+test
+.babelrc
+.eslint*
+gulpfile.js
+coverage
+tmp
