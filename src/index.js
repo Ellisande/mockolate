@@ -1,5 +1,3 @@
-export default {
-  mock: {},
-  MockFunc: {},
-  MockObject: {}
-};
+import mockFunction from 'mock/mockFunc';
+
+export {mockFunction};
