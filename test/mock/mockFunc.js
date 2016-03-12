@@ -5,14 +5,15 @@ import {
 import When from '../../src/when/when';
 
 describe('mock function', () => {
+  var mockFunc;
+  beforeEach(() => mockFunc = MockFunction());
+
   describe('no when', () => {
     it('should have return undefined with no callback', () => {
-      const mockFunc = MockFunction();
       expect(mockFunc()).not.to.be.ok;
     });
 
     it('should invoke the callback with nothing', (done) => {
-      const mockFunc = MockFunction();
       const cb = function(err, result) {
         expect(err).not.to.be.ok;
         expect(result).not.to.be.ok;
@@ -24,32 +25,70 @@ describe('mock function', () => {
 
   describe('when', () => {
     it('should have a when method', () => {
-      const mockFunc = MockFunction();
       expect(mockFunc.when).to.be.ok;
     });
 
     it('should accepts arguments', () => {
-      const mockFunc = MockFunction();
       expect(mockFunc.when('a', 'b', 1, 3)).to.be.ok;
     });
 
     it('should return a When object', () => {
-      const mockFunc = MockFunction();
       expect(mockFunc.when()).to.be.instanceof(When);
     });
   });
 
-  describe('then', () => {
-    it('should return a result when invoked with a matching when/then', () => {
-      const mockFunc = MockFunction();
-      mockFunc.when(1).thenReturn(2);
-      expect(mockFunc(1)).to.equal(2);
+  describe('matching when', () => {
+    it('should throw an error in there is no corresponding then', () => {
+      mockFunc.when(1);
+      expect(mockFunc.bind(null, 1)).to.throw(/A when must have/);
+    });
+
+    describe('return value', () => {
+      it('should return a result when invoked with a matching when/then', () => {
+        mockFunc.when(1).thenReturn(2);
+        expect(mockFunc(1)).to.equal(2);
+      });
+
+      it('should invoke a callback with a result if a match when/thenReturn is found', done => {
+        mockFunc.when(1).thenReturn(2);
+        mockFunc(1, (err, result) => {
+          expect(result).to.equal(2);
+          done(err);
+        });
+      });
+    });
+
+    describe('error value', () => {
+      it('should throw an error if an error value is specified with no callback', () => {
+        mockFunc.when(1).thenError('crazy');
+        expect(mockFunc.bind(null, 1)).to.throw(/crazy/);
+      });
+
+      it('should return an error value to the callback if an error value and callback are given', done => {
+        mockFunc.when(1).thenError('crazy');
+        mockFunc(1, err => {
+          expect(err).to.equal('crazy');
+          done();
+        });
+      });
+    });
+
+    describe('forced error', () => {
+      it('should throw an error if a callback is not given', () => {
+        mockFunc.when(1).thenThrow('crazy');
+        expect(mockFunc.bind(null, 1)).to.throw(/crazy/);
+      });
+
+      it('should throw an error even if a callback is provided', () => {
+        mockFunc.when(1).thenThrow('crazy');
+        const cb = () => {};
+        expect(mockFunc.bind(null, 1, cb)).to.throw(/crazy/);
+      });
     });
   });
 
   describe('verification', () => {
     it('should be able to report the number of times it was invoked', () => {
-      const mockFunc = MockFunction();
       mockFunc();
       mockFunc();
       mockFunc();
