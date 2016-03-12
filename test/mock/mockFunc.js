@@ -94,6 +94,20 @@ describe('mock function', () => {
       expect(mockFunc(1)).to.equal('crazy');
       expect(mockFunc()).to.equal('bat');
     });
+
+    it('should not matter the order the whens are declared', () => {
+      mockFunc.when(1).thenReturn('crazy');
+      mockFunc.when().thenReturn('bat');
+      expect(mockFunc(1)).to.equal('crazy');
+      expect(mockFunc()).to.equal('bat');
+    });
+
+    it('should not matter the order the mockFunctions are invoked', () => {
+      mockFunc.when().thenReturn('bat');
+      mockFunc.when(1).thenReturn('crazy');
+      expect(mockFunc()).to.equal('bat');
+      expect(mockFunc(1)).to.equal('crazy');
+    });
   });
 
   describe('verification', () => {
