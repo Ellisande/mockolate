@@ -1,0 +1,24 @@
+{
+  "name": "mockolate",
+  "version": "1.0.0",
+  "description": "Simple mocking framework for JS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ellisande/mockolate.git"
+  },
+  "keywords": [
+    "mock",
+    "mockito",
+    "simple"
+  ],
+  "author": "Ellisande",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Ellisande/mockolate/issues"
+  },
+  "homepage": "https://github.com/Ellisande/mockolate#readme"
+}
