@@ -1,4 +1,6 @@
 import _ from 'lodash';
+import { Matcher, exact } from '../matchers';
+
 class When {
   constructor(mockedFunction, args){
     if(!mockedFunction){
@@ -39,14 +41,10 @@ class When {
     const argsToMatch = arguments || [];
     let allMatch = this.args.every((arg, index) => {
       let argToMatch = argsToMatch[index];
-      //If args is a matcher then invoke its matchiness.
-      if(arg.equals){
-        return arg.equals(argToMatch);
+      if(arg instanceof Matcher){
+        return arg.matches(argToMatch);
       }
-      if(_.get(argToMatch, 'equals')){
-        return argToMatch.equals(arg);
-      }
-      return arg === argToMatch;
+      return exact(arg).matches(argToMatch);
     });
     return allMatch;
   }

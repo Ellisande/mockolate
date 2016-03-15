@@ -142,10 +142,6 @@ describe('when class', () => {
       const newWhen = new When(mockFunc, [arg]);
       expect(newWhen.matches(1)).to.equal(true);
       expect(newWhen.matches('1')).to.equal(true);
-      const stringWhen = new When(mockFunc, ['1']);
-      expect(stringWhen.matches(arg)).to.equal(true);
-      const numberWhen = new When(mockFunc, [1]);
-      expect(numberWhen.matches(arg)).to.equal(true);
     });
   });
 
