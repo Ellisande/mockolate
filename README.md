@@ -27,7 +27,7 @@ const ninja = {
 };
 
 //Now I tell it what I want it to do
-ninja.getArsenal.when('ninja stars').thenReturn('100 crazy awesome ninja stars');
+ninja.getArsenal.when('ninja stars').then.return('100 crazy awesome ninja stars');
 
 console.log(ninja.getArsenal('ninja stars'))
 //Result '100 crazy awesome ninja stars'
@@ -43,7 +43,7 @@ const ninja = {
   getArsenal: mockFunction()
 };
 
-ninja.getArsenal.when().thenReturn('100 crazy awesome ninja stars');
+ninja.getArsenal.when().then.return('100 crazy awesome ninja stars');
 ninja.getArsenal(function(err, weapons){
   console.log(weapons);
   //Result: '100 crazy awesome ninja stars' because we defined a when with no arguments
@@ -62,7 +62,7 @@ const ninja = {
 };
 
 //Now I tell it what I want it to do
-ninja.getArsenal.when('ninja stars').thenReturn('100 crazy awesome ninja stars');
+ninja.getArsenal.when('ninja stars').then.return('100 crazy awesome ninja stars');
 
 console.log(ninja.getArsenal('ninja stars'))
 //Result '100 crazy awesome ninja stars'
@@ -79,7 +79,7 @@ const ninja = {
 };
 
 //Now I tell it what I want it to do
-ninja.getArsenal.when().thenThrow(new Error('No weapons!'));
+ninja.getArsenal.when().then.error(new Error('No weapons!'));
 
 try{
   ninja.getArsenal();
@@ -89,8 +89,8 @@ try{
 }
 ```
 
-### throwError vs thenThrow
-`when.throwError` and `when.thenThrow` do the same thing for synchronous functions.
+### then.error vs then.forceError
+`then.error` and `then.forceError` do the same thing for synchronous functions.
 
 ## Asynchronous Stubbing
 
@@ -104,7 +104,7 @@ const ninja = {
 };
 
 //Now I tell it what I want it to do
-ninja.getArsenal.when('ninja stars').thenReturn('100 crazy awesome ninja stars');
+ninja.getArsenal.when('ninja stars').then.return('100 crazy awesome ninja stars');
 
 ninja.getArsenal('ninja stars', (err, message) => {
   console.log(message);
@@ -125,7 +125,7 @@ const ninja = {
 };
 
 //Now I tell it what I want it to do
-ninja.getArsenal.when('ninja stars').thenError('100 crazy awesome ninja stars');
+ninja.getArsenal.when('ninja stars').then.error('100 crazy awesome ninja stars');
 
 ninja.getArsenal('ninja stars', err => {
   console.log(err);
@@ -135,7 +135,7 @@ ninja.getArsenal('ninja stars', err => {
 ```
 
 ### Throw and error instead of invoking the callback
-This is where `thenError` and `thenThrow` differ. When mocking async functions `thenError` will invoke the callback with an error parameter, but using `thenThrow` will cause the function to throw an error instead.
+This is where `then.error` and `then.forceError` differ. When mocking async functions `then.error` will invoke the callback with an error parameter, but using `then.forceError` will cause the function to throw an error instead.
 
 ```js
 //I want to mock the ninja getArsenal function
@@ -144,7 +144,7 @@ const ninja = {
 };
 
 //Now I tell it what I want it to do
-ninja.getArsenal.when('ninja stars').thenThrow('No ninja stars!');
+ninja.getArsenal.when('ninja stars').then.forceError('No ninja stars!');
 
 try{
   ninja.getArsenal('ninja stars');
@@ -186,13 +186,13 @@ const ninja = {
 };
 
 //When getArsenal is invoked with 'ninja stars' then it should return 'No ninja stars!'
-ninja.getArsenal.when('ninja stars').thenReturn('No ninja stars!');
+ninja.getArsenal.when('ninja stars').then.return('No ninja stars!');
 //When getArsenal is invoked with 'swords' then it should return '1 katana'
-ninja.getArsenal.when('swords').thenReturn('1 katana');
+ninja.getArsenal.when('swords').then.return('1 katana');
 //To stub out no arguments, just provide an empty when
-ninja.getArsenal.when().thenReturn('1 katana and no ninja stars');
+ninja.getArsenal.when().then.return('1 katana and no ninja stars');
 //You can get really fancy and chain when/thens together. Not that every when must have exactly one then clause
-ninja.getArsenal.when('ninja stars').thenReturn('No ninja stars').when('sword').thenReturn('1 katana');
+ninja.getArsenal.when('ninja stars').then.return('No ninja stars').when('sword').then.return('1 katana');
 ```
 
 ### Matching
@@ -204,7 +204,7 @@ const ninja = {
   getArsenal: mockFunction()
 };
 //Normal case
-ninja.getArsenal.when('ninja stars').thenReturn('No ninja stars!');
+ninja.getArsenal.when('ninja stars').then.return('No ninja stars!');
 console.log(ninja.getArsenal('ninja stars'));
 //Result 'No ninja stars!'.
 
@@ -227,7 +227,7 @@ import {mockFunction, matchers} from 'mockolate';
 const ninja = {
   getArsenal: mockFunction()
 };
-ninja.getArsenal.when(matchers.any()).thenReturn('1 star');
+ninja.getArsenal.when(matchers.any()).then.return('1 star');
 console.log(ninja.getArsenal('anything at all'));
 //Result will be '1 star' since matchers.any() matches anything.
 ```
@@ -240,7 +240,7 @@ import {mockFunction, matchers} from 'mockolate';
 const ninja = {
   getArsenal: mockFunction()
 };
-ninja.getArsenal.when(matchers.any()).thenReturn('1 star');
+ninja.getArsenal.when(matchers.any()).then.return('1 star');
 console.log(ninja.getArsenal('anything at all'));
 //Result will be '1 star' since matchers.any() matches anything.
 ```
@@ -253,10 +253,10 @@ import {mockFunction, matchers} from 'mockolate';
 const ninja = {
   getArsenal: mockFunction()
 };
-ninja.getArsenal.when(matchers.exact(1)).thenReturn('1 star');
+ninja.getArsenal.when(matchers.exact(1)).then.return('1 star');
 console.log(ninja.getArsenal(1));
 //Result will be '1 star' since 1 exactly equals 1.
-ninja.getArsenal.when(matchers.exact(null)).thenReturn('2 stars');
+ninja.getArsenal.when(matchers.exact(null)).then.return('2 stars');
 console.log(ninja.getArsenal('anything at null'));
 //Result will never be '2 stars' since null and undefined never match anything exactly.
 ```
@@ -269,8 +269,8 @@ Whens match from most specific to least specific. That means if you give it a re
 const ninja = {
   getArsenal: mockFunction()
 };
-ninja.getArsenal.when().thenReturn('1 star');
-ninja.getArsenal.when('ninja stars').thenReturn('No ninja stars!');
+ninja.getArsenal.when().then.return('1 star');
+ninja.getArsenal.when('ninja stars').then.return('No ninja stars!');
 
 console.log(ninja.getArsenal());
 //Result is '1 stars' since it matches the no argument when.
@@ -283,9 +283,9 @@ If two whens have the exact same number of arguments (specificity) the order the
 
 
 ### Then Clauses
-Each one has to have exactly one then clause which tells it what to do in that situation. `thenReturn` is the most commonly used, but you can find more information about each before.
+Each one has to have exactly one then clause which tells it what to do in that situation. `then.return` is the most commonly used, but you can find more information about each before.
 
-#### thenReturn
+#### then.return
 Synchronous: returns the provided value
 Asynchronous: invokes the callback with the provided value
 
@@ -294,7 +294,7 @@ Asynchronous: invokes the callback with the provided value
 const ninja = {
   getArsenal: mockFunction()
 };
-ninja.getArsenal.when('ninja stars').thenReturn('No ninja stars!');
+ninja.getArsenal.when('ninja stars').then.return('No ninja stars!');
 
 //Synchronous
 console.log(ninja.getArsenal('ninja stars'));
@@ -307,18 +307,18 @@ ninja.getArsenal('ninja stars', (err, result) => {
 })
 ```
 
-#### thenError
+#### then.error
 Synchronous: throws an provided error, or creates a new error with the provided message
 Asynchronous: invokes the callback with the provided error value
 
-`thenError` is different from `thenThrow` in that it will invoke a callback with the error instead of throwing it (if possible). `thenThrow` will always throw an error, even if a callback is provided.
+`then.error` is different from `then.forceError` in that it will invoke a callback with the error instead of throwing it (if possible). `then.forceError` will always throw an error, even if a callback is provided.
 
 ```js
 //I want to mock the ninja getArsenal function
 const ninja = {
   getArsenal: mockFunction()
 };
-ninja.getArsenal.when('ninja stars').thenError('No ninja stars!');
+ninja.getArsenal.when('ninja stars').then.error('No ninja stars!');
 
 //Synchronous
 try{
@@ -337,7 +337,7 @@ ninja.getArsenal('ninja stars', err => {
 })
 ```
 
-#### thenThrow
+#### then.forceError
 Throws an error with the provided error or converts the provided message to an error. It always does this, wether a callback has been provided or not.
 
 ```js
@@ -345,7 +345,7 @@ Throws an error with the provided error or converts the provided message to an e
 const ninja = {
   getArsenal: mockFunction()
 };
-ninja.getArsenal.when('ninja stars').thenError('No ninja stars!');
+ninja.getArsenal.when('ninja stars').then.forceError('No ninja stars!');
 
 //Synchronous
 try{
@@ -367,16 +367,18 @@ try{
 }
 ```
 
+#### thenReturn
+Old style of then clause. This is deprecated use `then.return` instead.
+
+#### thenError
+Old style of then clause. This is deprecated use `then.error` instead.
+
+#### thenThrow
+Old style of then clause. This is deprecated use `the.forceError` instead.
+
 # Roadmap
 
 Upcoming features planned for Mockolate.
-
-## Matchers
-Will allow you to pass in generic matchers to `when` functions. Proposed example:
-
-```js
-ninja.getArsenal.when(matchers.regex(/ninja/))).theReturn('1 star');
-```
 
 ## In order returns
 Will allow you specify what should happen on repeated invocations with the same arguments. Currently no proposed example. The goal is to help mock the case where a function increments on each invocation.
