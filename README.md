@@ -36,7 +36,7 @@ console.log(ninja.getArsenal());
 //Result undefined, since we didn't specify a when for no arguments
 ```
 
-And the asynchronous version:
+The callback version:
 ```js
 //I want to mock the ninja getArsenal function
 const ninja = {
@@ -50,7 +50,20 @@ ninja.getArsenal(function(err, weapons){
 })
 ```
 
+
+The promise version:
+```js
+const ninja = {
+  getArsenal: mockFunction()
+};
+
+ninja.getArsenal.when().then.promise.to.return('100 crazy awesome ninja stars');
+ninja.getArsenal().then(result => console.log(result));
+//Result '100 crazy awesome ninja stars';
+```
+
 Thanks for taking the 5 second tour, you can find more documentation below!
+
 
 ## Synchronous Stubbing
 
@@ -92,7 +105,7 @@ try{
 ### then.error vs then.forceError
 `then.error` and `then.forceError` do the same thing for synchronous functions.
 
-## Asynchronous Stubbing
+## Asynchronous Callback Stubbing
 
 __Note:__ Mockolate assumes that you will be using the node conventions for asynchronous functions, meaning the last argument to the function should be the callback. It also assumes node style of invoking callback the the `callback(err, result)` convention;
 
@@ -152,6 +165,35 @@ try{
   console.log(err.message);
   //Result 'No ninja stars!'
 }
+```
+
+## Asynchronous Promise Stubbing
+Its simple to mock out functions that are expected to return a promise. Simply use `then.promise.to` examples below:
+
+### Resolve a Promise With a Value
+Ask the mocked function to return a resolved promise with `then.promise.to.return(value)`
+
+```js
+const ninja = {
+  getArsenal: mockFunction()
+};
+
+ninja.getArsenal.when().then.promise.to.return('100 crazy awesome ninja stars');
+ninja.getArsenal().then(result => console.log(result));
+//Result '100 crazy awesome ninja stars';
+```
+
+### Reject a Promise with an Error
+If you'd like the mock function to reject the promise you can use `then.promise.to.error(error)`
+
+```js
+const ninja = {
+  getArsenal: mockFunction()
+};
+
+ninja.getArsenal.when().then.promise.to.error('No weapons');
+ninja.getArsenal().catch(error => console.log(error.message));
+//Result 'No weapons';
 ```
 
 # Documentation
@@ -282,10 +324,10 @@ __Note:__
 If two whens have the exact same number of arguments (specificity) the order they will execute in is undefined. This should not generally be a problem because the more arguments you have the less likely that all the arguments will be exactly the same.
 
 
-### Then Clauses
-Each one has to have exactly one then clause which tells it what to do in that situation. `then.return` is the most commonly used, but you can find more information about each before.
+## Then
+Each when has to have exactly one then clause which tells it what to do in that situation. `then.return` is the most commonly used, but you can find more information about each before.
 
-#### then.return
+### then.return
 Synchronous: returns the provided value
 Asynchronous: invokes the callback with the provided value
 
@@ -307,7 +349,7 @@ ninja.getArsenal('ninja stars', (err, result) => {
 })
 ```
 
-#### then.error
+### then.error
 Synchronous: throws an provided error, or creates a new error with the provided message
 Asynchronous: invokes the callback with the provided error value
 
@@ -337,7 +379,7 @@ ninja.getArsenal('ninja stars', err => {
 })
 ```
 
-#### then.forceError
+### then.forceError
 Throws an error with the provided error or converts the provided message to an error. It always does this, wether a callback has been provided or not.
 
 ```js
@@ -365,6 +407,34 @@ try{
   expect(err).to.be.instanceof(Error);
   expect(err.message).to.equal('No ninja stars!');
 }
+```
+
+#### then.promise
+This can be used to have the mock function return a promise.
+
+#### then.promise.to.return
+Resolves a promise with the provided value.
+```js
+const ninja = {
+  getArsenal: mockFunction()
+};
+
+ninja.getArsenal.when().then.promise.to.return('100 crazy awesome ninja stars');
+ninja.getArsenal().then(result => console.log(result));
+//Result '100 crazy awesome ninja stars';
+```
+
+#### then.promise.to.error
+Rejects a promise with the provided error value.
+
+```js
+const ninja = {
+  getArsenal: mockFunction()
+};
+
+ninja.getArsenal.when().then.promise.to.error('No weapons');
+ninja.getArsenal().catch(error => console.log(error.message));
+//Result 'No weapons';
 ```
 
 #### thenReturn
