@@ -3,6 +3,7 @@ import {
   expect
 } from 'chai';
 import _ from 'lodash';
+import {exact, any} from '../../src/matchers';
 
 describe('when class', () => {
   const mockFunc = () => {};
@@ -142,10 +143,13 @@ describe('when class', () => {
       const newWhen = new When(mockFunc, [arg]);
       expect(newWhen.matches(1)).to.equal(true);
       expect(newWhen.matches('1')).to.equal(true);
-      const stringWhen = new When(mockFunc, ['1']);
-      expect(stringWhen.matches(arg)).to.equal(true);
-      const numberWhen = new When(mockFunc, [1]);
-      expect(numberWhen.matches(arg)).to.equal(true);
+    });
+
+    it('should honor matcher passed in', () => {
+      const newWhen = new When(mockFunc, [any()]);
+      expect(newWhen.matches(5)).to.equal(true);
+      const mixedMatchers = new When(mockFunc, [exact(2), any(), 3]);
+      expect(mixedMatchers.matches(2, null, 3)).equal(true);
     });
   });
 
