@@ -14,6 +14,7 @@ describe('Then object', () => {
     expect(newThen.errorValue).not.to.be.ok;
     expect(newThen.force).to.equal(false);
     expect(newThen.mockedFunction).to.equal(mockFunc);
+    expect(newThen.isPromise).to.equal(false);
   });
 
   describe('return', () => {
@@ -161,6 +162,38 @@ describe('Then object', () => {
     });
   });
 
+  describe('promise', () => {
+    it('should expose a to object', () => {
+      expect(newThen.promise).to.be.ok;
+      expect(newThen.promise.to).to.be.ok;
+    });
+
+    describe('to.return', () => {
+      it('should set promise to true', () => {
+        newThen.promise.to.return(1);
+        expect(newThen.isPromise).to.equal(true);
+      });
+
+      it('should set the return value', () => {
+        newThen.promise.to.return(1);
+        expect(newThen.returnValue).to.equal(1);
+      });
+    });
+
+    describe('to.error', () => {
+      const testError = new Error('a');
+      it('should set promise to true', () => {
+        newThen.promise.to.error(testError);
+        expect(newThen.isPromise).to.equal(true);
+      });
+
+      it('should set the error value', () => {
+        newThen.promise.to.error(testError);
+        expect(newThen.errorValue).to.equal(testError);
+      });
+    });
+  });
+
   describe('execute', () => {
     it('should throw an error if this then is not valid', () => {
       expect(newThen.execute.bind(newThen)).to.throw(/A when must/);
@@ -200,11 +233,11 @@ describe('Then object', () => {
       it('should throw an error if force is set', () => {
         const testError = new Error('a');
         newThen.forceError(testError);
-        try{
+        try {
           newThen.execute(() => {
             expect(true).not.to.be.ok;
           });
-        } catch (err){
+        } catch (err) {
           expect(err).to.equal(testError);
           return;
         }
@@ -213,7 +246,22 @@ describe('Then object', () => {
     });
 
     describe('promise', () => {
-      //TODO: Promise stuff
+      it('should invoke then with the return value', done => {
+        newThen.promise.to.return(1);
+        newThen.execute().then(result => {
+          expect(result).to.equal(1);
+          done();
+        });
+      });
+
+      it('should invoke catch with the error value', done => {
+        const testError = new Error('a');
+        newThen.promise.to.error(testError);
+        newThen.execute().catch(err => {
+          expect(err).to.equal(testError);
+          done();
+        });
+      });
     });
   });
 });
