@@ -13,7 +13,7 @@ const MockFunction = function(){
     const cb = _.findLast(args, i => i && typeof i === 'function');
     const matchingWhen = _.find(whens, when => when.matches(...args));
     if(matchingWhen){
-      return matchingWhen.execute(cb);
+      return matchingWhen.then.execute(cb);
     }
     return cb ? cb() : undefined;
   };
