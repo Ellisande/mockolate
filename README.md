@@ -218,6 +218,49 @@ console.log(ninja.getArsenal('ninja stars', 'balloons'));
 ```
 Since all when arguments were provided (i.e. `'ninja stars'`) it doesn't matter that we also pass in balloons. This is particularly useful if you are mocking asynchronous functions because you do not have to specify the callback but it will still match.
 
+### Matchers
+Matchers allow you to pass in 'fuzzy' arguments to a when. This allows for more generic stubbing.
+
+#### Usage Example
+```js
+import {mockFunction, matchers} from 'mockolate';
+const ninja = {
+  getArsenal: mockFunction()
+};
+ninja.getArsenal.when(matchers.any()).thenReturn('1 star');
+console.log(ninja.getArsenal('anything at all'));
+//Result will be '1 star' since matchers.any() matches anything.
+```
+
+#### AnyMatcher
+Matches anything passed into that argument.
+
+```js
+import {mockFunction, matchers} from 'mockolate';
+const ninja = {
+  getArsenal: mockFunction()
+};
+ninja.getArsenal.when(matchers.any()).thenReturn('1 star');
+console.log(ninja.getArsenal('anything at all'));
+//Result will be '1 star' since matchers.any() matches anything.
+```
+
+#### ExactMatcher
+Matches if any only if what is passed into the matcher is exactly equal to the invocation argument. Passing `null` or `undefined` into the ExactMatcher will never match.
+
+```js
+import {mockFunction, matchers} from 'mockolate';
+const ninja = {
+  getArsenal: mockFunction()
+};
+ninja.getArsenal.when(matchers.exact(1)).thenReturn('1 star');
+console.log(ninja.getArsenal(1));
+//Result will be '1 star' since 1 exactly equals 1.
+ninja.getArsenal.when(matchers.exact(null)).thenReturn('2 stars');
+console.log(ninja.getArsenal('anything at null'));
+//Result will never be '2 stars' since null and undefined never match anything exactly.
+```
+
 ### Specificity
 Whens match from most specific to least specific. That means if you give it a really general when like `when()` it will only match if no other whens match first.
 
