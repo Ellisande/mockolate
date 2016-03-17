@@ -51,7 +51,7 @@ describe('when class', () => {
         b: 2
       };
       newWhen.thenReturn(returnValue);
-      expect(newWhen.return).to.equal(returnValue);
+      expect(newWhen.then.returnValue).to.equal(returnValue);
     });
 
     it('should return the mocked function', () => {
@@ -61,7 +61,7 @@ describe('when class', () => {
         b: 2
       };
       const result = newWhen.thenReturn(returnValue);
-      expect(newWhen.return).to.equal(returnValue);
+      expect(newWhen.then.returnValue).to.equal(returnValue);
       expect(result).to.equal(mockFunc);
     });
 
@@ -72,7 +72,7 @@ describe('when class', () => {
         b: 2
       };
       newWhen.thenReturn(returnValue);
-      expect(newWhen.thenReturn.bind(newWhen)).to.throw(/Each when can only/);
+      expect(newWhen.thenReturn.bind(newWhen)).to.throw(/A when cannot/);
     });
   });
 
@@ -81,16 +81,16 @@ describe('when class', () => {
       const newWhen = new When(mockFunc);
       const errorValue = 'abc1234';
       newWhen.thenError(errorValue);
-      expect(newWhen.error).to.equal(errorValue);
-      expect(newWhen.forceError).to.not.be.ok;
+      expect(newWhen.then.errorValue.message).to.equal(errorValue);
+      expect(newWhen.then.force).to.not.be.ok;
     });
 
     it('should return the mocked function', () => {
       const newWhen = new When(mockFunc);
       const errorValue = 'abc1234';
       const result = newWhen.thenError(errorValue);
-      expect(newWhen.error).to.equal(errorValue);
-      expect(newWhen.forceError).to.not.be.ok;
+      expect(newWhen.then.errorValue.message).to.equal(errorValue);
+      expect(newWhen.then.force).to.not.be.ok;
       expect(result).to.equal(mockFunc);
     });
 
@@ -98,15 +98,15 @@ describe('when class', () => {
       const newWhen = new When(mockFunc);
       const errorValue = 'abc1234';
       newWhen.thenError(errorValue);
-      expect(newWhen.thenError.bind(newWhen)).to.throw(/Each when can only/);
+      expect(newWhen.thenError.bind(newWhen)).to.throw(/A when cannot/);
     });
 
     it('should error if another then is called after it', () => {
       const newWhen = new When(mockFunc);
       const errorValue = 'abc1234';
       newWhen.thenError(errorValue);
-      expect(newWhen.thenReturn.bind(newWhen)).to.throw(/Each when can only/);
-      expect(newWhen.thenError.bind(newWhen)).to.throw(/Each when can only/);
+      expect(newWhen.thenReturn.bind(newWhen)).to.throw(/A when cannot/);
+      expect(newWhen.thenError.bind(newWhen)).to.throw(/A when cannot/);
     });
   });
 
@@ -115,8 +115,8 @@ describe('when class', () => {
       const newWhen = new When(mockFunc);
       const errorValue = 'abc1234';
       const result = newWhen.thenThrow(errorValue);
-      expect(newWhen.error).to.equal(errorValue);
-      expect(newWhen.forceError).to.equal(true);
+      expect(newWhen.then.errorValue.message).to.equal(errorValue);
+      expect(newWhen.then.force).to.equal(true);
       expect(result).to.equal(mockFunc);
     });
   });
@@ -150,19 +150,6 @@ describe('when class', () => {
       expect(newWhen.matches(5)).to.equal(true);
       const mixedMatchers = new When(mockFunc, [exact(2), any(), 3]);
       expect(mixedMatchers.matches(2, null, 3)).equal(true);
-    });
-  });
-
-  describe('verify', () => {
-    it('should throw an error if a return or error value has already been set', () => {
-      const noReturns = new When(mockFunc);
-      expect(noReturns.verify.bind(noReturns)).not.to.throw('Anything');
-      const returnValue = new When(mockFunc);
-      returnValue.thenReturn('anything');
-      expect(returnValue.verify.bind(returnValue)).to.throw(/Each when can only/);
-      const errorValue = new When(mockFunc);
-      errorValue.thenError('some error');
-      expect(errorValue.verify.bind(errorValue)).to.throw(/Each when can only/);
     });
   });
 

@@ -43,47 +43,9 @@ describe('mock function', () => {
       expect(mockFunc.bind(null, 1)).to.throw(/A when must have/);
     });
 
-    describe('return value', () => {
-      it('should return a result when invoked with a matching when/then', () => {
-        mockFunc.when(1).thenReturn(2);
-        expect(mockFunc(1)).to.equal(2);
-      });
-
-      it('should invoke a callback with a result if a match when/thenReturn is found', done => {
-        mockFunc.when(1).thenReturn(2);
-        mockFunc(1, (err, result) => {
-          expect(result).to.equal(2);
-          done(err);
-        });
-      });
-    });
-
-    describe('error value', () => {
-      it('should throw an error if an error value is specified with no callback', () => {
-        mockFunc.when(1).thenError('crazy');
-        expect(mockFunc.bind(null, 1)).to.throw(/crazy/);
-      });
-
-      it('should return an error value to the callback if an error value and callback are given', done => {
-        mockFunc.when(1).thenError('crazy');
-        mockFunc(1, err => {
-          expect(err).to.equal('crazy');
-          done();
-        });
-      });
-    });
-
-    describe('forced error', () => {
-      it('should throw an error if a callback is not given', () => {
-        mockFunc.when(1).thenThrow('crazy');
-        expect(mockFunc.bind(null, 1)).to.throw(/crazy/);
-      });
-
-      it('should throw an error even if a callback is provided', () => {
-        mockFunc.when(1).thenThrow('crazy');
-        const cb = () => {};
-        expect(mockFunc.bind(null, 1, cb)).to.throw(/crazy/);
-      });
+    it('should invoke the execute function for the corresponding then', () => {
+      mockFunc.when(1).then.return('a');
+      expect(mockFunc(1)).to.equal('a');
     });
   });
 

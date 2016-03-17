@@ -1,41 +1,37 @@
 import _ from 'lodash';
 import { Matcher, exact } from '../matchers';
+import Then from '../then/then';
 
+const logDeprecationWarning = (oldMethod, newMethod) => {
+  console.log(`Warning: when.${oldMethod}() is deprecated. It will be removed in the next major version. Use when.then.${newMethod}() instead.`);
+};
+
+/*
+Hello. My name is the When class. I am supposed to do a couple things very well:
+1) Match to arguments. This is my primary function
+2) Allow access to my then clause
+*/
 class When {
   constructor(mockedFunction, args){
-    if(!mockedFunction){
-      //TODO Add a super awesome error
-      throw new Error('Ooops, something went wrong with the mock');
-    }
-    this.mockedFunction = mockedFunction;
+    this.then = new Then(mockedFunction);
     this.options = _.get(mockedFunction, 'options.when', {});
     this.args = args;
     this.specificity = args ? args.length : 0;
   }
-  verify(){
-    if(this.return || this.error){
-      //TODO Add better error.
-      throw new Error('Each when can only have one then. If you want to add another condition, chain it off the then.');
-    }
-  }
   valid(){
-    return this.error ? !this.return : !!this.return;
+    return this.then.valid();
   }
-  thenReturn(returnValue){
-    this.verify();
-    this.return = returnValue;
-    return this.mockedFunction;
+  thenReturn(value){
+    logDeprecationWarning('thenReturn', 'return');
+    return this.then.return(value);
   }
   thenError(errorValue){
-    this.verify();
-    this.error = errorValue;
-    return this.mockedFunction;
+    logDeprecationWarning('thenError', 'error');
+    return this.then.error(errorValue);
   }
   thenThrow(errorValue){
-    this.verify();
-    this.error = errorValue;
-    this.forceError = true;
-    return this.mockedFunction;
+    logDeprecationWarning('thenThrow', 'forceError');
+    return this.then.forceError(errorValue);
   }
   matches(){
     const argsToMatch = arguments || [];
