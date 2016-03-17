@@ -141,7 +141,7 @@ const ninja = {
 ninja.getArsenal.when('ninja stars').then.error('100 crazy awesome ninja stars');
 
 ninja.getArsenal('ninja stars', err => {
-  console.log(err);
+  console.log(err.message);
   //Result '100 crazy awesome ninja stars'
   //No error was thrown, the callback was invoked with one.
 })
@@ -168,7 +168,6 @@ try{
 ```
 
 ## Asynchronous Promise Stubbing
-Its simple to mock out functions that are expected to return a promise. Simply use `then.promise.to` examples below:
 
 ### Resolve a Promise With a Value
 Ask the mocked function to return a resolved promise with `then.promise.to.return(value)`
