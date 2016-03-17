@@ -327,8 +327,8 @@ If two whens have the exact same number of arguments (specificity) the order the
 Each when has to have exactly one then clause which tells it what to do in that situation. `then.return` is the most commonly used, but you can find more information about each before.
 
 ### then.return
-Synchronous: returns the provided value
-Asynchronous: invokes the callback with the provided value
+- Synchronous: returns the provided value
+- Asynchronous: invokes the callback with the provided value
 
 ```js
 //I want to mock the ninja getArsenal function
@@ -349,8 +349,8 @@ ninja.getArsenal('ninja stars', (err, result) => {
 ```
 
 ### then.error
-Synchronous: throws an provided error, or creates a new error with the provided message
-Asynchronous: invokes the callback with the provided error value
+- Synchronous: throws an provided error, or creates a new error with the provided message
+- Asynchronous: invokes the callback with the provided error value
 
 `then.error` is different from `then.forceError` in that it will invoke a callback with the error instead of throwing it (if possible). `then.forceError` will always throw an error, even if a callback is provided.
 
