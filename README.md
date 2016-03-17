@@ -62,7 +62,7 @@ ninja.getArsenal().then(result => console.log(result));
 //Result '100 crazy awesome ninja stars';
 ```
 
-Thanks for taking the 5 second tour, you can find more documentation below!
+Thanks for taking the 5 second tour, you can find more documentation below or see the [exmaples test](https://github.com/Ellisande/mockolate/blob/promise-support/test/examples.j) for more samples.
 
 
 ## Synchronous Stubbing
