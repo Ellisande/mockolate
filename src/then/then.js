@@ -22,10 +22,28 @@ const execPromise = (retValue, error) => {
   return new Promise(resolve => resolve(retValue));
 };
 
+/*
+Hi everyone, I'm the Then class! I have two jobs:
+1) Store values to return later
+2) Return the values when asked
+*/
 class Then {
   constructor(mockedFunction){
     this.force = false;
+    this.isPromise = false;
     this.mockedFunction = mockedFunction;
+    this.promise = {
+      to: {
+        return: value => {
+          this.isPromise = true;
+          return this.return(value);
+        },
+        error: error => {
+          this.isPromise = true;
+          return this.error(error);
+        }
+      }
+    };
   }
   return(value){
     this.checkDuplicate();
@@ -56,7 +74,7 @@ class Then {
       //TODO: Make the error great again
       throw new Error(`A when must have a matching then. You did not specify a valid then clause for this when.`);
     }
-    if(this.promise){
+    if(this.isPromise){
       return execPromise(this.returnValue, this.errorValue);
     }
     if(cb){
