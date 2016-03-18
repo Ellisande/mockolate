@@ -66,13 +66,13 @@ class Then {
   checkDuplicate(){
     if(this.valid()){
       //TODO: Make errors great again.
-      throw new Error(`A when cannot have more than one corresponding then clause.`);
+      throw new Error('A when cannot have more than one corresponding then clause.');
     }
   }
   execute(cb){
     if(!this.valid()){
       //TODO: Make the error great again
-      throw new Error(`A when must have a matching then. You did not specify a valid then clause for this when.`);
+      throw new Error('A when must have a matching then. You did not specify a valid then clause for this when.');
     }
     if(this.isPromise){
       return execPromise(this.returnValue, this.errorValue);
