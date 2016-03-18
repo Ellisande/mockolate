@@ -4,7 +4,7 @@ Mockolate is a JavaScript mocking framework, because the other mocks don't have 
 
 # Getting Started
 
-`npm install i mockolate --save-dev`
+`npm install mockolate --save-dev`
 
 # Usage
 
@@ -107,7 +107,7 @@ try{
 
 ## Asynchronous Callback Stubbing
 
-__Note:__ Mockolate assumes that you will be using the node conventions for asynchronous functions, meaning the last argument to the function should be the callback. It also assumes node style of invoking callback the the `callback(err, result)` convention;
+__Note:__ Mockolate assumes that you will be using the node conventions for asynchronous functions, meaning the last argument to the function should be the callback. It also assumes the node convention of invoking a callback as `callback(err, result);`
 
 ### Return a value to the callback
 ```js
@@ -147,8 +147,8 @@ ninja.getArsenal('ninja stars', err => {
 })
 ```
 
-### Throw and error instead of invoking the callback
-This is where `then.error` and `then.forceError` differ. When mocking async functions `then.error` will invoke the callback with an error parameter, but using `then.forceError` will cause the function to throw an error instead.
+### Throw an error instead of invoking the callback
+This is where `then.error` and `then.forceError` differ. When mocking async functions `then.error` will invoke the callback with an error parameter. Using `then.forceError` will cause the function to throw an error instead.
 
 ```js
 //I want to mock the ninja getArsenal function
@@ -206,7 +206,7 @@ Tracks the number of times the function has been called.
 const myFunc = mockFunction();
 myFunc();
 myFunc();
-expect(myFunc.called).to.equal(true);
+expect(myFunc.called).to.equal(2);
 ```
 
 ### When
@@ -218,7 +218,7 @@ The `when` method allows you to provide when/then pairings to tell the mock how 
 The when object allows you to tell a mock how you would like it to act. Each when must be paired with a `then` telling it what you would like it to do.
 
 ### Basic Usage
-When takes in any number of arguments you like, and will use the correspond `then` clause to act how you want it to when the mocked function is invoked with those arguments. Ok, seems complex, but it just hard to describe. Here it is in practice.
+When takes in any number of arguments you like, and will use the correspond `then` clause to act how you want it to when the mocked function is invoked with those arguments. Ok, seems complex, but it's just hard to describe. Here it is in practice.
 
 ```js
 //I want to mock the ninja getArsenal function
@@ -262,17 +262,6 @@ Since all when arguments were provided (i.e. `'ninja stars'`) it doesn't matter 
 ### Matchers
 Matchers allow you to pass in 'fuzzy' arguments to a when. This allows for more generic stubbing.
 
-#### Usage Example
-```js
-import {mockFunction, matchers} from 'mockolate';
-const ninja = {
-  getArsenal: mockFunction()
-};
-ninja.getArsenal.when(matchers.any()).then.return('1 star');
-console.log(ninja.getArsenal('anything at all'));
-//Result will be '1 star' since matchers.any() matches anything.
-```
-
 #### AnyMatcher
 Matches anything passed into that argument.
 
@@ -303,7 +292,7 @@ console.log(ninja.getArsenal('anything at null'));
 ```
 
 ### Specificity
-Whens match from most specific to least specific. That means if you give it a really general when like `when()` it will only match if no other whens match first.
+`When` will match from most specific to least specific. That means if you give it a really general when like `when()` it will only match if no other `when` matches first.
 
 ```js
 //I want to mock the ninja getArsenal function
@@ -450,7 +439,7 @@ Old style of then clause. This is deprecated use `the.forceError` instead.
 Upcoming features planned for Mockolate.
 
 ## In order returns
-Will allow you specify what should happen on repeated invocations with the same arguments. Currently no proposed example. The goal is to help mock the case where a function increments on each invocation.
+Will allow you to specify what should happen on repeated invocations with the same arguments. Currently no proposed example. The goal is to help mock the case where a function increments on each invocation.
 
 ## Mock Objects
 Will provide a simple way to create a mock from an existing object. Proposed example:
