@@ -39,5 +39,6 @@
   },
   "dependencies": {
     "lodash": "^4.6.1"
-  }
+  },
+  "tonicExampleFilename": "tonic_example.js"
 }
