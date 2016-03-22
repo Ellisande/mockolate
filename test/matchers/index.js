@@ -10,6 +10,10 @@ describe('matchers', () => {
     expect(Matchers.any).to.be.ok;
   });
 
+  it('should expose an anyString matcher', () => {
+    expect(Matchers.anyString).to.be.ok;
+  });
+
   it('should expose an exact matcher', () => {
     expect(Matchers.exact).to.be.ok;
   });
