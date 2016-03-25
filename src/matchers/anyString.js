@@ -1,14 +1,13 @@
 import Matcher from './matcher';
 class AnyString extends Matcher {
-  constructor(stringToMatch){
+  constructor(){
     super();
-    this.value = stringToMatch;
   }
-  matches(){
-    if (!this.value) {
+  matches(stringToMatch){
+    if (!stringToMatch) {
       return false;
     }
-    if (typeof this.value === 'string' || this.value instanceof String)
+    if (typeof stringToMatch === 'string' || stringToMatch instanceof String)
       return true;
     else
       return false;
@@ -17,4 +16,4 @@ class AnyString extends Matcher {
 export {
   AnyString
 };
-export default (stringToMatch) => new AnyString(stringToMatch);
+export default () => new AnyString();
