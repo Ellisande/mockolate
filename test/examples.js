@@ -132,10 +132,7 @@ describe('examples', () => {
       };
       ninja.roundhouse('a');
       ninja.roundhouse('b');
-      const callHistory = ninja.roundhouse.called.with('a');
-      expect(callHistory).to.have.length.of(1);
-      expect(callHistory[0].args).to.deep.equal(['a']);
-      expect(callHistory[0].scope).to.equal(ninja);
+      expect(ninja.roundhouse.called.with('a')).to.be.ok;
     });
   });
 });
