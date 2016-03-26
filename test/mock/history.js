@@ -2,7 +2,7 @@ import CallHistory, {Call} from '../../src/mock/history';
 import {expect} from 'chai';
 import {any} from '../../src/matchers/index';
 
-describe.only('call history', () => {
+describe('call history', () => {
   var callHistory;
   beforeEach(() => {
     callHistory = new CallHistory();
