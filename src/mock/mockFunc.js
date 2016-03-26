@@ -32,6 +32,9 @@ const MockFunction = function(){
   mockedFunction.called.with = (...args) => {
     return history.findMatchingArgs(args);
   };
+  mockedFunction.lastCalled = () => {
+    return history.last;
+  };
   return mockedFunction;
 };
 

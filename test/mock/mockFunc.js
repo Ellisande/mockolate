@@ -100,6 +100,20 @@ describe('mock function', () => {
       });
     });
 
+    describe('last called', () => {
+      it('should return the call object from the latest invocation', () => {
+        const testScope = {};
+        const testScope2 = [];
+        const testScope3 = {a: 'a'};
+        mockFunc.call(testScope, 'a');
+        mockFunc.call(testScope2, 'b');
+        mockFunc.call(testScope3, 'c');
+        const call = mockFunc.lastCalled();
+        expect(call.args).to.deep.equal(['c']);
+        expect(call.scope).to.equal(testScope3);
+      });
+    });
+
     describe('called with', () => {
       it('should return calls that strictly match the arguments', () => {
         const testScope = {};
