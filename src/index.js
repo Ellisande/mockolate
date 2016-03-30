@@ -1,7 +1,8 @@
 import mockFunction from './mock/mockFunc';
-import {any, exact} from './matchers';
+import {any, anyString, exact} from './matchers';
 const matchers = {
   any,
+  anyString,
   exact
 };
 

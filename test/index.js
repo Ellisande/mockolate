@@ -17,6 +17,11 @@ describe('mockolate', () => {
       expect(matchers.any).to.be.ok;
     });
 
+    it('should expose the anyString matcher', () => {
+      expect(matchers).be.ok;
+      expect(matchers.anyString).to.be.ok;
+    });
+
     it('should expose the exact matcher', () => {
       expect(matchers).to.be.ok;
       expect(matchers.exact).to.be.ok;
