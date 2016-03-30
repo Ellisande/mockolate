@@ -4,6 +4,7 @@ import {
 } from 'chai';
 import When from '../../src/when/when';
 
+
 describe('mock function', () => {
   var mockFunc;
   beforeEach(() => mockFunc = MockFunction());
@@ -73,11 +74,69 @@ describe('mock function', () => {
   });
 
   describe('verification', () => {
-    it('should be able to report the number of times it was invoked', () => {
-      mockFunc();
-      mockFunc();
-      mockFunc();
-      expect(mockFunc.called).to.equal(3);
+    describe('called', () => {
+      it('should be able to report the number of times it was invoked', () => {
+        mockFunc();
+        mockFunc();
+        mockFunc();
+        expect(mockFunc.called()).to.have.length.of(3);
+      });
+
+      it('should return the args and scope of previous calls', () => {
+        const testScope = {};
+        const testScope2 = [];
+        const testScope3 = {a: 'a'};
+        mockFunc.call(testScope, 'a');
+        mockFunc.call(testScope2, 'b');
+        mockFunc.call(testScope3);
+        expect(mockFunc.called()).to.have.length.of(3);
+        const calls = mockFunc.called();
+        expect(calls[0].args).to.deep.equal(['a']);
+        expect(calls[0].scope).to.equal(testScope);
+        expect(calls[1].args).to.deep.equal(['b']);
+        expect(calls[1].scope).to.equal(testScope2);
+        expect(calls[2].args).to.have.length.of(0);
+        expect(calls[2].scope).to.equal(testScope3);
+      });
+    });
+
+    describe('last called', () => {
+      it('should return the call object from the latest invocation', () => {
+        const testScope = {};
+        const testScope2 = [];
+        const testScope3 = {a: 'a'};
+        mockFunc.call(testScope, 'a');
+        mockFunc.call(testScope2, 'b');
+        mockFunc.call(testScope3, 'c');
+        const call = mockFunc.lastCalled();
+        expect(call.args).to.deep.equal(['c']);
+        expect(call.scope).to.equal(testScope3);
+      });
+    });
+
+    describe('called with', () => {
+      it('should return calls that strictly match the arguments', () => {
+        const testScope = {};
+        const testScope2 = [];
+        const testScope3 = {a: 'a'};
+        mockFunc.call(testScope, 'a');
+        mockFunc.call(testScope2, 'b');
+        mockFunc.call(testScope3);
+        const calls = mockFunc.called.with('a');
+        expect(calls).to.have.length.of(1);
+        expect(calls[0].args).to.deep.equal(['a']);
+      });
+
+      it('should not return calls that do not match', () => {
+        const testScope = {};
+        const testScope2 = [];
+        const testScope3 = {a: 'a'};
+        mockFunc.call(testScope, 'a');
+        mockFunc.call(testScope2, 'b');
+        mockFunc.call(testScope3);
+        const calls = mockFunc.called.with('c');
+        expect(calls).to.have.length.of(0);
+      });
     });
   });
 });
