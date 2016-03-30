@@ -1,16 +1,16 @@
 import Matcher from './matcher';
 class AnyString extends Matcher {
-  constructor(){
+  constructor() {
     super();
   }
-  matches(stringToMatch){
+  matches(stringToMatch) {
     if (!stringToMatch) {
       return false;
     }
-    if (typeof stringToMatch === 'string' || stringToMatch instanceof String)
+    if (typeof stringToMatch === 'string' || stringToMatch instanceof String) {
       return true;
-    else
-      return false;
+    }
+    return false;
   }
 };
 export {

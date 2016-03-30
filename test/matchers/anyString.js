@@ -1,5 +1,7 @@
 import anyString from '../../src/matchers/anyString';
-import { expect } from 'chai';
+import {
+  expect
+} from 'chai';
 import Matcher from '../../src/matchers/matcher';
 
 describe('anyString matcher', () => {
@@ -28,6 +30,6 @@ describe('anyString matcher', () => {
     const stringMatcher = anyString();
     expect(stringMatcher.matches(1)).to.equal(false);
     expect(stringMatcher.matches(false)).to.equal(false);
-    expect(stringMatcher.matches([1,2,3,4])).to.equal(false);
+    expect(stringMatcher.matches([1, 2, 3, 4])).to.equal(false);
   });
 });
