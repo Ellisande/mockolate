@@ -336,6 +336,22 @@ console.log(ninja.getArsenal('anything at null'));
 //Result will never be '2 stars' since null and undefined never match anything exactly.
 ```
 
+#### AnyStringMatcher
+Matches if any only if what is passed into the matcher is an instance of a String object. Passing `null` or `undefined` into the AnyStringMatcher will never match.
+
+```js
+import {mockFunction, matchers} from 'mockolate';
+const ninja = {
+  getArsenal: mockFunction()
+};
+ninja.getArsenal.when(matchers.anyString('a string')).then.return('1 star');
+console.log(ninja.getArsenal('any string'));
+//Result will be '1 star' since 1 exactly equals 1.
+ninja.getArsenal.when(matchers.anyString(null)).then.return('2 stars');
+console.log(ninja.getArsenal('anything at null'));
+//Result will never be '2 stars' since null and undefined never match anything exactly.
+```
+
 ### Specificity
 `When` will match from most specific to least specific. That means if you give it a really general when like `when()` it will only match if no other `when` matches first.
 
