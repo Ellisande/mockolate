@@ -103,4 +103,36 @@ describe('examples', () => {
     });
   });
 
+  describe('verification', () => {
+    it('number of calls', () => {
+      let ninja = {
+        roundhouse: mockFunction()
+      };
+      ninja.roundhouse();
+      expect(ninja.roundhouse.called()).to.have.length.of(1);
+    });
+
+    it('full call history', () => {
+      let ninja = {
+        roundhouse: mockFunction()
+      };
+      ninja.roundhouse('a');
+      ninja.roundhouse('b');
+      const callHistory = ninja.roundhouse.called();
+      expect(callHistory).to.have.length.of(2);
+      expect(callHistory[0].args).to.deep.equal(['a']);
+      expect(callHistory[0].scope).to.equal(ninja);
+      expect(callHistory[1].args).to.deep.equal(['b']);
+      expect(callHistory[1].scope).to.equal(ninja);
+    });
+
+    it('search call history', () => {
+      let ninja = {
+        roundhouse: mockFunction()
+      };
+      ninja.roundhouse('a');
+      ninja.roundhouse('b');
+      expect(ninja.roundhouse.called.with('a')).to.be.ok;
+    });
+  });
 });

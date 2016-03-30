@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import When from '../when/when';
+import CallHistory from './history';
 
 const sortBySpecificity = (leftWhen, rightWhen) => {
   return rightWhen.specificity - leftWhen.specificity;
@@ -7,9 +8,10 @@ const sortBySpecificity = (leftWhen, rightWhen) => {
 
 const MockFunction = function(){
   const whens = [];
+  var history = new CallHistory();
   const mockedFunction = function(){
-    mockedFunction.called++;
-    const args = arguments;
+    const args = _.toArray(arguments);
+    history = history.add(args, this);
     const cb = _.findLast(args, i => i && typeof i === 'function');
     const matchingWhen = _.find(whens, when => when.matches(...args));
     if(matchingWhen){
@@ -24,7 +26,15 @@ const MockFunction = function(){
     whens.sort(sortBySpecificity);
     return when;
   };
-  mockedFunction.called = 0;
+  mockedFunction.called = () => {
+    return history.calls;
+  };
+  mockedFunction.called.with = (...args) => {
+    return history.findMatchingArgs(args);
+  };
+  mockedFunction.lastCalled = () => {
+    return history.last;
+  };
   return mockedFunction;
 };
 
