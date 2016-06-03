@@ -61,7 +61,7 @@ class Then {
     return this.mockedFunction;
   }
   valid(){
-    return this.errorValue ? !this.returnValue : !!this.returnValue;
+    return this.errorValue ? !this.returnValue : this.returnValue !== undefined;
   }
   checkDuplicate(){
     if(this.valid()){

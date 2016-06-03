@@ -24,6 +24,12 @@ describe('Then object', () => {
       expect(newThen.returnValue).to.equal('a');
     });
 
+    it('should set the return value when returning null', () => {
+      expect(newThen.return).to.be.ok;
+      newThen.return(null);
+      expect(newThen.returnValue).to.equal(null);
+    });
+
     it('should return the mocked function for chaining', () => {
       expect(newThen.return('a')).to.equal(mockFunc);
     });
@@ -117,6 +123,13 @@ describe('Then object', () => {
     it('should be valid if the return value is set', () => {
       newThen.return('a');
       expect(newThen.returnValue).to.be.ok;
+      expect(newThen.errorValue).to.not.be.ok;
+      expect(newThen.valid()).to.equal(true);
+    });
+
+    it('should be valid if the return value is null', () => {
+      newThen.return(null);
+      expect(newThen.returnValue).to.be.null;
       expect(newThen.errorValue).to.not.be.ok;
       expect(newThen.valid()).to.equal(true);
     });
