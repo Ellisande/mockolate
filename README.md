@@ -360,7 +360,7 @@ import {mockFunction, matchers} from 'mockolate';
 const ninja = {
   getArsenal: mockFunction()
 };
-ninja.getArsenal.when(matchers.deepEquals({a: 1}')).then.return('1 star');
+ninja.getArsenal.when(matchers.deepEquals({a: 1})).then.return('1 star');
 console.log(ninja.getArsenal({a: 1}));
 //Result will be '1 star' since 1 exactly equals 1.
 ninja.getArsenal.when(matchers.deepEquals(null)).then.return('2 stars');
