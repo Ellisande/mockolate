@@ -18,3 +18,4 @@ export {
     DeepEqualsMatcher
 };
 export default (valueToMatch) => new DeepEqualsMatcher(valueToMatch);
+
