@@ -17,4 +17,8 @@ describe('matchers', () => {
   it('should expose an exact matcher', () => {
     expect(Matchers.exact).to.be.ok;
   });
+
+  it ('should expose a deepEquals matcher', () => {
+    expect(Matchers.deepEquals).to.be.ok;
+  });
 });
